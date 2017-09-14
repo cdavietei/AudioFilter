@@ -5,7 +5,7 @@ repositories {
     mavenCentral()
 }
 
-mainClassName=""
+mainClassName="com.audiofilter.Main"
 
 dependencies {
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
