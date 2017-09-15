@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
  *
  * https://cloud.google.com/speech/reference/rest/v1/RecognitionAudio
  */
+@Builder
 public class RecognitionAudio {
 
     @SerializedName("content") @Accessors(prefix = "m") @Getter @Setter
@@ -18,4 +19,10 @@ public class RecognitionAudio {
 
     @SerializedName("uri") @Accessors(prefix = "m") @Getter @Setter
     protected String mUri;
+
+    public String toString() {
+        Gson gson = new Gson();
+
+        return gson.toJson(this);
+    }//toString()
 }//RecognitionAudio class
