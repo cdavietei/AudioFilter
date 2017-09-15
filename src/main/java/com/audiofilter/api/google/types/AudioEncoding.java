@@ -18,7 +18,7 @@ public enum AudioEncoding {
     private String mEncoding;
 
     private AudioEncoding(String encoding) {
-        mEncoding = encoding;
+        mEncoding = encoding.toUpperCase();
     }//AudioEncoding(String)
 
     public String toString() {
