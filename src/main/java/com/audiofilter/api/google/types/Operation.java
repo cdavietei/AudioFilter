@@ -17,7 +17,7 @@ public class Operation {
     protected String mName;
 
     @SerializedName("metadata") @Accessors(prefix = "m") @Getter
-    protected JsonObject mMetaData;
+    protected RecognizeMetadata mMetaData;
 
     @SerializedName("done") @Accessors(prefix = "m") @Getter
     protected boolean mDone;
@@ -26,6 +26,6 @@ public class Operation {
     protected Status mError;
 
     @SerializedName("response") @Accessors(prefix = "m") @Getter
-    protected JsonObject mResponse;
+    protected RecognizeResult mResponse;
 
 }//Operation class
