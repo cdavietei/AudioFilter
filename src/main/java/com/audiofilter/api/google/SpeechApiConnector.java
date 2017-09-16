@@ -15,6 +15,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import lombok.*;
+import lombok.experimental.Accessors;
+
+
 public class SpeechApiConnector {
 
     protected SpeechApi mApi;
@@ -22,9 +26,13 @@ public class SpeechApiConnector {
     protected RecognitionConfig mConfig;
     protected RecognitionAudio mAudio;
 
+    @Accessors(prefix = "m") @Getter
+    protected LongRecognizeResult mLongRecognizeResult;
+
     public String mApiKey;
 
     public static final String SPEECH_KEY_PATH = "data/api/google_api_key.txt";
+    public static final long WAIT_TIME = 500;
 
     public SpeechApiConnector() {
         setup();
@@ -115,8 +123,8 @@ public class SpeechApiConnector {
         return results;
     }//sendSync()
 
-    public LongRecognizeResult sendAsync() {
-        LongRecognizeResult result = null;
+    public SpeechApiConnector sendAsyncAndWait() {
+        mLongRecognizeResult = null;
 
         try {
             Call<LongRecognizeResult> call = mApi.longRecognize(
@@ -124,14 +132,53 @@ public class SpeechApiConnector {
                 buildRequestBody()
             );
 
-            result = call.execute().body();
+            mLongRecognizeResult = call.execute().body();
         }
         catch(Exception e) {
             e.printStackTrace();
-            return null;
+            return this;
         }
-        return result;
+        return this;
     }//sendAsync()
+
+    public LongRecognizeResult sendAsync() {
+        return sendAsyncAndWait().getLongRecognizeResult();
+    }//sendAsync()
+
+    public Operation waitForLongRecognize() {
+
+        String name = getLongRecognizeResult().getName();
+        Operation op = null;
+
+        try {
+            Call<Operation> call = mApi.operation(name, mApiKey);
+
+            op = call.execute().body();
+
+            op.getName();
+
+            while(!op.isDone()) {
+                Thread.sleep(WAIT_TIME);
+
+                call = call.clone();
+
+                op = call.execute().body();
+            }//while op !done
+        }
+        // catch(IOException e) {
+        //
+        // }
+        // catch(IllegalArgumentException e) {
+        //
+        // }
+        // catch(InterruptedException e) {
+        //
+        // }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return op;
+    }//waitForLongRecognize()
 
     public boolean checkLongRecognize() {
         //TODO: Check long running recognize process
