@@ -14,13 +14,13 @@ public interface SpeechApi {
     @POST("/v1/speech:longrunningrecognize")
     Call<LongRecognizeResult> longRecognize(
         @Query("key") String key,
-        @Body RequestBody body
+        @Body SpeechRequestBody body
     );
 
     @POST("/v1/speech:recognize")
-    Call<JsonObject> recognize(
+    Call<RecognizeResult> recognize(
         @Query("key") String key,
-        @Body RequestBody body
+        @Body SpeechRequestBody body
     );
 
     @GET("/v1/operations/{name}")
