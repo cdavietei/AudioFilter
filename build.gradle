@@ -1,3 +1,14 @@
+buildscript{
+  repositories{
+    mavenCentral()
+    jcenter()
+  }
+  dependencies{
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+  }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 apply plugin: 'application'
 
@@ -21,4 +32,17 @@ dependencies {
 
     //Apache Commons
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
+}
+
+jar{
+	manifest{
+		attributes(
+			'Main-Class':mainClassName
+		)
+	}
+}
+
+shadowJar{
+	zip64 true
+	configurations = [project.configurations.compile]
 }
