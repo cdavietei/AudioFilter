@@ -9,8 +9,6 @@ import com.google.gson.*;
 
 public interface SpeechApi {
 
-// https://speech.googleapis.com/v1/speech:longrunningrecognize
-
     @POST("/v1/speech:longrunningrecognize")
     Call<LongRecognizeResult> longRecognize(
         @Query("key") String key,
@@ -25,7 +23,7 @@ public interface SpeechApi {
 
     @GET("/v1/operations/{name}")
     Call<Operation> operation(
-        @Query("key") String apiKey,
-        @Path("name") String name
+        @Path("name") String name,
+        @Query("key") String apiKey
     );
 }//SpeechApi interface
