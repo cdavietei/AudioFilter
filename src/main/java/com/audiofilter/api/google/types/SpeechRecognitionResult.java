@@ -6,7 +6,7 @@ import com.google.gson.annotations.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Java Wrapper for class specified at:
@@ -15,5 +15,5 @@ import java.util.ArrayList;
  */
 public class SpeechRecognitionResult {
     @SerializedName("alternatives") @Accessors(prefix = "m") @Getter
-    protected ArrayList<SpeechRecognitionAlternative> mAlternatives;
+    protected List<SpeechRecognitionAlternative> mAlternatives;
 }//SpeechRecognitionResult class
