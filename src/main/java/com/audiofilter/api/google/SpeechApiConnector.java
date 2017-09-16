@@ -17,6 +17,8 @@ import java.nio.file.Paths;
 
 public class SpeechApiConnector {
 
+    protected SpeechApi mApi;
+
     protected RecognitionConfig mConfig;
     protected RecognitionAudio mAudio;
 
@@ -30,6 +32,7 @@ public class SpeechApiConnector {
 
     protected void setup() {
         getApiKey();
+        mApi = ApiUtil.getSpeechApi();
     }//setup()
 
     /**
@@ -81,27 +84,32 @@ public class SpeechApiConnector {
         return this;
     }//setAudioFile(String)
 
-    public JsonObject sendSync() {
-        JsonObject results = null;
+    protected boolean isReady() {
+        // TODO: Define function to check if request is readys
+        return true;
+    }//isReady()
+
+    protected SpeechRequestBody buildRequestBody() {
+        return SpeechRequestBody.builder()
+            .config(mConfig)
+            .audio(mAudio)
+            .build();
+    }//buildRequestBody()
+
+    public RecognizeResult sendSync() {
+        RecognizeResult results = null;
 
         try {
-            SpeechApi api = ApiUtil.getSpeechApi();
-
-            RequestBody body = RequestBody.builder()
-                .config(mConfig)
-                .audio(mAudio)
-                .build();
-
-            Call<JsonObject> call = api.recognize(
+            Call<RecognizeResult> call = mApi.recognize(
                 mApiKey,
-                body
+                buildRequestBody()
             );
 
             results = call.execute().body();
         }
         catch(Exception e) {
             e.printStackTrace();
-            return new JsonObject();
+            return new RecognizeResult();
         }
 
         return results;
@@ -111,21 +119,10 @@ public class SpeechApiConnector {
         LongRecognizeResult result = null;
 
         try {
-            SpeechApi api = ApiUtil.getSpeechApi();
-
-            RequestBody body = RequestBody.builder()
-                .config(mConfig)
-                .audio(mAudio)
-                .build();
-
-            Call<LongRecognizeResult> call = api.longRecognize(
+            Call<LongRecognizeResult> call = mApi.longRecognize(
                 mApiKey,
-                body
+                buildRequestBody()
             );
-
-            System.out.println(call.request());
-            // System.out.println(body);
-            // System.out.println(call.request().body());
 
             result = call.execute().body();
         }
@@ -134,8 +131,11 @@ public class SpeechApiConnector {
             return null;
         }
         return result;
-    }
+    }//sendAsync()
 
-
-
+    public boolean checkLongRecognize() {
+        //TODO: Check long running recognize process
+        //Blocking operation
+        return true;
+    }//checkLongRecognize()
 }//SpeechApiConnector class
