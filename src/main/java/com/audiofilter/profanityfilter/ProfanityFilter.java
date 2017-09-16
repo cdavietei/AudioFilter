@@ -11,7 +11,7 @@ import com.audiofilter.api.google.types.*;
 public class ProfanityFilter {
 
     //TODO: Change this for production
-    public static final String SWEARS_FILE = "data/filters/swears-fake.txt";
+    public static final String SWEARS_FILE = "data/filters/swears.txt";
 
     protected static Set<String> BLACK_LIST;
 
