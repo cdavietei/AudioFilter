@@ -12,12 +12,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // SpeechApiConnector connector = new SpeechApiConnector();
-        // RecognizeResult obj = connector.setAudioFile("data/zach-short.flac")
-        //     .setFlacConfig()
-        //     .sendSync();
-        //
-        // System.out.println(obj);
+        String audioFile = "data/zach-short.flac";
+
+        // Only works with a JAR file
+        if(args.length > 0) audioFile = args[0];
 
         PipelineStage pFilter = new ProfanityStage();
         pFilter.input("data/zach-short.flac");
@@ -25,6 +23,5 @@ public class Main {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         System.out.println(gson.toJson(pFilter.result()));
-
     }
 }//Main class
